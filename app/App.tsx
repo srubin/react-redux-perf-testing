@@ -161,6 +161,19 @@ function Description() {
                     <div><Image src="/images/connect-5000.png" height={200} width={325} /></div>
                 </div>
             </p>
+            <p>
+                <em>
+                    <strong>Disclaimer:</strong> You can avoid the penalty altogether by
+                    moving the <code>useSelect</code>/<code>connect</code> components outside of
+                    the subtree that's re-rendering. (Or, by fetching the value from redux a single
+                    time, rather than in each component). This demo should be seen as a proxy for
+                    a complex app where a change in the redux store causes a parent with many
+                    children to re-render.
+                </em>
+            </p>
+            <p>
+                <em>&mdash; Steve Rubin, 3/18/2022</em>
+            </p>
         </div>
     )
 }
