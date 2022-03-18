@@ -134,8 +134,8 @@ function Description() {
             </p>
             <p>
                 FPS is a very coarse measure of performance, here. To get a better sense of what's going on, open
-                up the browser dev tools and record a performance profile. With 1000 components, <code>useSelector</code>
-                spends 14% of the total time in "scripting" while <code>connect</code> uses 7% of the total time in "scripting":
+                up the browser dev tools and record a performance profile. With 1000
+                components, <code>useSelector</code> spends 14% of the total time in "scripting" while <code>connect</code> uses 7% of the total time in "scripting":
             </p>
             <p>
                 <div>
