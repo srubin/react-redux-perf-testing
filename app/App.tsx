@@ -123,7 +123,7 @@ function Description() {
         <div className={appStyles.description}>
             <p>
                 This demo shows the performance difference between using react-redux's <code>useSelector</code> hook
-                and react-redux's <code>connect</code> higher-order component. Each of the components below the big counting
+                and react-redux's <code>connect</code> higher-order component creator. Each of the components below the big counting
                 number are getting a value from redux. They are also all children of the updating counter,
             </p>
             <p>
