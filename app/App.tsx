@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 // @ts-ignore
 import appStyles from '../styles/App.module.css';
 import {useAppDispatch, useAppSelector} from "./hooks";
@@ -34,8 +34,9 @@ function ExtraUseSelector() {
     );
 }
 
-function useCounterTick(ms: number, clearFrameRateTwiddle: number) {
+function CounterTick({ms, clearFrameRateTwiddle} :{ ms: number, clearFrameRateTwiddle: number}) {
     const dispatch = useAppDispatch();
+    const ref = useRef<HTMLSpanElement>(null);
     useEffect(() => {
         const start = Date.now();
         let ticks = 0;
@@ -43,12 +44,20 @@ function useCounterTick(ms: number, clearFrameRateTwiddle: number) {
             dispatch(increment());
             ticks++;
             const now = Date.now();
-            console.log('Frame rate', ticks / (now - start) * 1000)
+            const fps = ticks / (now - start) * 1000;
+            if (ref.current) {
+                // modify this directly in the DOM to avoid any impact it may have on react perf
+                ref.current.innerText = fps.toFixed(0)
+            }
         }, ms)
         return () => {
             clearInterval(handle);
         }
     }, [dispatch, ms, clearFrameRateTwiddle]);
+
+    return (
+        <div className={styles.value}>FPS: <span ref={ref} /></div>
+    )
 }
 
 const Counter = connect((state: RootState) => ({
@@ -57,7 +66,7 @@ const Counter = connect((state: RootState) => ({
     // update to reset frame rate computation
     const [clearFrameRateTwiddle, setClearFrameRateTwiddle] = useState(0);
 
-    useCounterTick(16, clearFrameRateTwiddle);
+    // useCounterTick(16, clearFrameRateTwiddle);
 
     const [componentCount, setComponentCount] = useState<number | undefined>(1000);
     const arr = useMemo(() => {
@@ -87,7 +96,10 @@ const Counter = connect((state: RootState) => ({
     return (
         <div>
             <div className={styles.row}>
-                <span className={styles.value}>{count}</span>
+                <span className={styles.value}>Tick: {count}</span>
+            </div>
+            <div className={styles.row}>
+                <CounterTick ms={16} clearFrameRateTwiddle={clearFrameRateTwiddle}/>
             </div>
             <div className={styles.row}>
                 <button onClick={toggle}>Toggle component type</button>
@@ -105,12 +117,37 @@ const Counter = connect((state: RootState) => ({
     );
 });
 
+function Description() {
+    return (
+        <div className={appStyles.description}>
+            <p>
+                This demo shows the performance difference between using react-redux's <code>useSelector</code> hook
+                and react-redux's <code>connect</code> higher-order component. Each of the components below the big counting
+                number are getting a value from redux. They are also all children of the updating counter,
+            </p>
+            <p>
+                Use the toggle to switch the components between the two.
+            </p>
+            <p>
+                You can also change the number of components that are rendered to see the perf impact.
+            </p>
+            <p>
+                FPS is a very coarse measure of performance, here. To get a better sense of what's going on, open
+                up the browser dev tools and record a performance profile. With 1000 components, <code>useSelector</code>
+                spends x% of the total time in "scripting" while <code>connect</code> uses y% of the total time in "scripting":
+            </p>
+        </div>
+    )
+}
+
 function App() {
   return (
     <div className={appStyles.App}>
       <header className={appStyles['App-header']}>
-        <Counter />
+          useSelector considered harmful?
       </header>
+      <Description />
+      <Counter />
     </div>
   );
 }

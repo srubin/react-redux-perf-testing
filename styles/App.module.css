@@ -14,7 +14,6 @@
 }
 
 .App-header {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,4 +35,11 @@
   100% {
     transform: translateY(0px);
   }
+}
+
+.description p {
+  text-align: left;
+  width: 60vw;
+  margin: auto;
+  padding: 10px;
 }
