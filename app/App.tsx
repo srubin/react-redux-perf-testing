@@ -14,25 +14,25 @@ interface EmptyProps {
 
 }
 
+const Foo = React.memo(function Foo({value, name}: {value: string, name: string}) {
+    return (
+        <div className={styles.row}>
+            <span>{name}: {value}</span>
+        </div>
+    );
+});
+
 const ExtraConnected = connect((state: RootState) => {
     return {
         foo: selectFoo(state),
     };
 })(function ExtraConnected<EmptyProps>({ foo }: { foo: string }) {
-    return (
-        <div className={styles.row}>
-            <span>Connect: {foo}</span>
-        </div>
-    );
+    return <Foo value={foo} name="connect" />;
 })
 
 function ExtraUseSelector() {
     const foo = useAppSelector(selectFoo);
-    return (
-        <div className={styles.row}>
-            <span>Use selector: {foo}</span>
-        </div>
-    );
+    return <Foo value={foo} name="useSelector" />;
 }
 
 function CounterTick({ms, clearFrameRateTwiddle} :{ ms: number, clearFrameRateTwiddle: number}) {
