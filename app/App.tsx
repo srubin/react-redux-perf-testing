@@ -8,6 +8,7 @@ import styles from "../styles/Counter.module.css";
 import {connect} from "react-redux";
 import {RootState} from "./store";
 import {selectFoo} from "./features/extra/extraSlice";
+import Image from 'next/image';
 
 interface EmptyProps {
 
@@ -134,7 +135,31 @@ function Description() {
             <p>
                 FPS is a very coarse measure of performance, here. To get a better sense of what's going on, open
                 up the browser dev tools and record a performance profile. With 1000 components, <code>useSelector</code>
-                spends x% of the total time in "scripting" while <code>connect</code> uses y% of the total time in "scripting":
+                spends 14% of the total time in "scripting" while <code>connect</code> uses 7% of the total time in "scripting":
+            </p>
+            <p>
+                <div>
+                    <b>useSelector (1000):</b>
+                    <div><Image src="/images/useSelector-1000.png" height={200} width={325} /></div>
+                </div>
+                <div>
+                    <b>Connect (1000):</b>
+                    <div><Image src="/images/connect-1000.png" height={200} width={325} /></div>
+                </div>
+            </p>
+            <p>
+                With 5000 components, the frame rate drops of <code>useSelector</code> and saturates the UI thread,
+                while <code>connect</code> still has capacity to spare:
+            </p>
+            <p>
+                <div>
+                    <b>useSelector (5000):</b>
+                    <div><Image src="/images/useSelector-5000.png" height={200} width={325} /></div>
+                </div>
+                <div>
+                    <b>Connect (5000):</b>
+                    <div><Image src="/images/connect-5000.png" height={200} width={325} /></div>
+                </div>
             </p>
         </div>
     )
@@ -143,11 +168,15 @@ function Description() {
 function App() {
   return (
     <div className={appStyles.App}>
-      <header className={appStyles['App-header']}>
-          useSelector considered harmful?
-      </header>
-      <Description />
-      <Counter />
+        <div className={appStyles.column}>
+            <header className={appStyles['App-header']}>
+                useSelector considered harmful?
+            </header>
+            <Description />
+        </div>
+        <div className={appStyles.column}>
+            <Counter />
+        </div>
     </div>
   );
 }
