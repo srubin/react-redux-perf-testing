@@ -1,10 +1,12 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import './App.css';
-import {useAppDispatch, useAppSelector} from "./app/hooks";
+// @ts-ignore
+import appStyles from '../styles/App.module.css';
+import {useAppDispatch, useAppSelector} from "./hooks";
 import {increment, selectCount} from "./features/counter/counterSlice";
-import styles from "./features/counter/Counter.module.css";
+// @ts-ignore
+import styles from "../styles/Counter.module.css";
 import {connect} from "react-redux";
-import {RootState} from "./app/store";
+import {RootState} from "./store";
 import {selectFoo} from "./features/extra/extraSlice";
 
 interface EmptyProps {
@@ -105,8 +107,8 @@ const Counter = connect((state: RootState) => ({
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className={appStyles.App}>
+      <header className={appStyles['App-header']}>
         <Counter />
       </header>
     </div>
